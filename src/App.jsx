@@ -138,7 +138,8 @@ export default function App() {
     const absent  = records.filter(r => r.status === 'Absent').length
     const late    = records.filter(r => r.status === 'Late').length
     const excused = records.filter(r => r.status === 'Excused').length
-    const rate    = total ? Math.round(present / total * 100) : null
+    const attended = present + absent + late
+    const rate    = attended ? Math.round(present / attended * 100) : null
     return { name, total, present, absent, late, excused, rate }
   })
 
