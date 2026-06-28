@@ -136,11 +136,10 @@ export default function App() {
     const total   = records.length
     const present = records.filter(r => r.status === 'Present').length
     const absent  = records.filter(r => r.status === 'Absent').length
-    const late    = records.filter(r => r.status === 'Late').length
     const excused = records.filter(r => r.status === 'Excused').length
-    const attended = present + absent + late
-    const rate    = attended ? Math.round(present / attended * 100) : null
-    return { name, total, present, absent, late, excused, rate }
+    const counted = present + absent + excused
+    const rate    = counted ? Math.round((present + excused) / counted * 100) : null
+    return { name, total, present, absent, excused, rate }
   })
 
   const counts = {
@@ -347,7 +346,7 @@ export default function App() {
                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                   <thead>
                     <tr style={{ background: 'var(--navy)', color: '#fff' }}>
-                      {['Team Member','Present','Absent','Late','Excused','Attendance %'].map(h => (
+                      {['Team Member','Present','Absent','Excused','Attendance %'].map(h => (
                         <th key={h} style={{ padding: '11px 16px', textAlign: h === 'Team Member' ? 'left' : 'center', fontSize: 12, fontWeight: 600, letterSpacing: '.3px' }}>{h}</th>
                       ))}
                     </tr>
@@ -361,7 +360,6 @@ export default function App() {
                         </td>
                         <Num v={s.present} bg="var(--green)" color="var(--green-t)" />
                         <Num v={s.absent}  bg="var(--red)"   color="var(--red-t)" />
-                        <Num v={s.late}    bg="var(--yellow)"color="var(--yellow-t)" />
                         <Num v={s.excused} bg="var(--purple)"color="var(--purple-t)" />
                         <td style={{ padding: '11px 16px', textAlign: 'center' }}>
                           {s.rate !== null ? (
